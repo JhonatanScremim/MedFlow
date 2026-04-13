@@ -2,7 +2,7 @@ using MedFlow.Domain.Enums;
 
 namespace MedFlow.Domain.Entities;
 
-public class Exam
+public class Exam : IEntity
 {
     public Guid Id { get; set; }
     public Guid PatientId { get; set; }

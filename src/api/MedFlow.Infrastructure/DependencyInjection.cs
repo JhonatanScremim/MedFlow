@@ -1,4 +1,8 @@
+using MedFlow.Infrastructure.Auth;
 using MedFlow.Infrastructure.Persistence;
+using MedFlow.Infrastructure.Persistence.DbContexts;
+using MedFlow.Infrastructure.Persistence.Interfaces;
+using MedFlow.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +17,14 @@ public static class DependencyInjection
             options.UseSqlServer(
                 configuration.GetConnectionString("Database"),
                 sql => sql.MigrationsAssembly(typeof(MedFlowDbContext).Assembly.GetName().Name)));
+
+        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+
+        services.AddSingleton<IJwtTokenIssuer, JwtTokenIssuer>();
+        services.AddSingleton<IUserPasswordHasher, UserPasswordHasher>();
+        services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
 
         return services;
     }

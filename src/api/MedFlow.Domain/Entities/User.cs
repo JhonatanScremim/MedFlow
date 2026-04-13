@@ -1,6 +1,6 @@
 namespace MedFlow.Domain.Entities;
 
-public class User
+public class User : IEntity
 {
     public Guid Id { get; set; }
     public string Email { get; set; } = string.Empty;

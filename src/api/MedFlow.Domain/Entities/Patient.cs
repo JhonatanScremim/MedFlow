@@ -1,6 +1,6 @@
 namespace MedFlow.Domain.Entities;
 
-public class Patient
+public class Patient : IEntity
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }

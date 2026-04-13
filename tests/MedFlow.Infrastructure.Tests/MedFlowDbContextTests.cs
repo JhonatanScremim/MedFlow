@@ -1,6 +1,6 @@
 using MedFlow.Domain.Entities;
 using MedFlow.Domain.Enums;
-using MedFlow.Infrastructure.Persistence;
+using MedFlow.Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedFlow.Infrastructure.Tests;

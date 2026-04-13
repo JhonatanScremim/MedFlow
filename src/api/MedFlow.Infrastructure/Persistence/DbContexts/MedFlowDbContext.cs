@@ -1,7 +1,7 @@
 using MedFlow.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace MedFlow.Infrastructure.Persistence;
+namespace MedFlow.Infrastructure.Persistence.DbContexts;
 
 public class MedFlowDbContext(DbContextOptions<MedFlowDbContext> options) : DbContext(options)
 {

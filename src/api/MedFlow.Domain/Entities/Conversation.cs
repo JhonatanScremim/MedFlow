@@ -1,6 +1,6 @@
 namespace MedFlow.Domain.Entities;
 
-public class Conversation
+public class Conversation : IEntity
 {
     public Guid Id { get; set; }
     public Guid ExamId { get; set; }
