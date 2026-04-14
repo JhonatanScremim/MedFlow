@@ -14,5 +14,7 @@ public sealed class UserRepository(MedFlowDbContext db) : IUserRepository
         db.Users
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
+            .Include(u => u.Doctor)
+            .Include(u => u.Patient)
             .FirstOrDefaultAsync(u => u.Email == normalizedEmail);
 }

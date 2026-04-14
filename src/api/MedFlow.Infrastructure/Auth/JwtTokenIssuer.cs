@@ -32,6 +32,12 @@ public sealed class JwtTokenIssuer(IOptions<JwtOptions> options) : IJwtTokenIssu
         if (subject.RoleNames.Count > 0)
             claims.Add(new Claim("roles", string.Join(',', subject.RoleNames)));
 
+        if (subject.DoctorId is not null)
+            claims.Add(new Claim("doctorId", subject.DoctorId.Value.ToString()));
+
+        if (subject.PatientId is not null)
+            claims.Add(new Claim("patientId", subject.PatientId.Value.ToString()));
+
         var token = new JwtSecurityToken(
             _options.Issuer,
             _options.Audience,

@@ -7,4 +7,5 @@ public class Doctor : IEntity
     public DateTimeOffset CreatedAt { get; set; }
 
     public User User { get; set; } = null!;
+    public ICollection<Exam> Exams { get; set; } = new List<Exam>();
 }

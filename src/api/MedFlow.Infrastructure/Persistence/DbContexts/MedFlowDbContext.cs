@@ -57,7 +57,9 @@ public class MedFlowDbContext(DbContextOptions<MedFlowDbContext> options) : DbCo
         {
             e.HasKey(x => x.Id);
             e.Property(x => x.Status).HasConversion<int>();
+            e.Property(x => x.ScheduledAtUtc);
             e.Property(x => x.Notes).HasMaxLength(2000);
+            e.HasOne(x => x.Doctor).WithMany(x => x.Exams).HasForeignKey(x => x.DoctorId).OnDelete(DeleteBehavior.NoAction);
             e.HasOne(x => x.Conversation).WithOne(x => x.Exam).HasForeignKey<Conversation>(x => x.ExamId);
         });
 

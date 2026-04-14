@@ -4,6 +4,7 @@ using MedFlow.Infrastructure.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedFlow.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(MedFlowDbContext))]
-    partial class MedFlowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260414131119_AddExamScheduledAtUtc")]
+    partial class AddExamScheduledAtUtc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,9 +74,6 @@ namespace MedFlow.Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("DoctorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Notes")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
@@ -94,8 +94,6 @@ namespace MedFlow.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
@@ -239,18 +237,11 @@ namespace MedFlow.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MedFlow.Domain.Entities.Exam", b =>
                 {
-                    b.HasOne("MedFlow.Domain.Entities.Doctor", "Doctor")
-                        .WithMany("Exams")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("MedFlow.Domain.Entities.Patient", "Patient")
                         .WithMany("Exams")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Doctor");
 
                     b.Navigation("Patient");
                 });
@@ -306,11 +297,6 @@ namespace MedFlow.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("MedFlow.Domain.Entities.Conversation", b =>
                 {
                     b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("MedFlow.Domain.Entities.Doctor", b =>
-                {
-                    b.Navigation("Exams");
                 });
 
             modelBuilder.Entity("MedFlow.Domain.Entities.Exam", b =>

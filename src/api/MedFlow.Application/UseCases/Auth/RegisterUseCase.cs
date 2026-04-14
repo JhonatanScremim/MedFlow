@@ -13,6 +13,8 @@ public sealed class RegisterUseCase(
     IRoleRepository roleRepository,
     IBaseRepository<User> userRepositoryCrud,
     IBaseRepository<Role> roleRepositoryCrud,
+    IBaseRepository<Doctor> doctorRepositoryCrud,
+    IBaseRepository<Patient> patientRepositoryCrud,
     IUserPasswordHasher passwordHasher,
     IJwtTokenIssuer jwtTokenIssuer) : IRegisterUseCase
 {
@@ -41,7 +43,33 @@ public sealed class RegisterUseCase(
         user.UserRoles.Add(new UserRole { UserId = user.Id, RoleId = role.Id });
         await userRepositoryCrud.CreateAsync(user);
 
-        return jwtTokenIssuer.Issue(new JwtSubjectData(user.Id, user.Email, [role.Name]));
+        Guid? doctorId = null;
+        Guid? patientId = null;
+
+        if (registrationRole is RegistrationRole.Doctor)
+        {
+            var doctor = await doctorRepositoryCrud.CreateAsync(new Doctor
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                CreatedAt = DateTimeOffset.UtcNow
+            });
+            doctorId = doctor.Id;
+        }
+
+        if (registrationRole is RegistrationRole.Patient)
+        {
+            var patient = await patientRepositoryCrud.CreateAsync(new Patient
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                IsAnonymous = false,
+                CreatedAt = DateTimeOffset.UtcNow
+            });
+            patientId = patient.Id;
+        }
+
+        return jwtTokenIssuer.Issue(new JwtSubjectData(user.Id, user.Email, [role.Name], doctorId, patientId));
     }
 
     private async Task<Role> GetOrCreateRoleAsync(string name)

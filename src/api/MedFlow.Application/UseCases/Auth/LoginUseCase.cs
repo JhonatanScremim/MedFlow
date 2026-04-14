@@ -21,6 +21,11 @@ public sealed class LoginUseCase(
             throw new AuthenticationException("Credenciais inválidas");
 
         var roles = user.UserRoles.Select(ur => ur.Role.Name).ToArray();
-        return jwtTokenIssuer.Issue(new JwtSubjectData(user.Id, user.Email, roles));
+        return jwtTokenIssuer.Issue(new JwtSubjectData(
+            user.Id,
+            user.Email,
+            roles,
+            user.Doctor?.Id,
+            user.Patient?.Id));
     }
 }
