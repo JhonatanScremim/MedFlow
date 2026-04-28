@@ -17,6 +17,10 @@ public abstract class BaseController : ControllerBase
         {
             return Unauthorized(new { message = ex.Message });
         }
+        catch (BadRequestException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
         catch (Exception ex)
         {
             return StatusCode(500, new
