@@ -16,6 +16,10 @@ public sealed class ExamMappingProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom((_, _, _, context) => (DateTimeOffset)context.Items["Now"]))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom((_, _, _, context) => (DateTimeOffset)context.Items["Now"]));
 
-        CreateMap<ExamEntity, CreateExamResponse>();
+        CreateMap<ExamEntity, CreateExamResponse>()
+            .ForCtorParam("ConversationId", opt => opt.MapFrom(src => src.Conversation == null ? null : (Guid?)src.Conversation.Id));
+
+        CreateMap<ExamEntity, ExamResponse>()
+            .ForCtorParam("ConversationId", opt => opt.MapFrom(src => src.Conversation == null ? null : (Guid?)src.Conversation.Id));
     }
 }

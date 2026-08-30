@@ -2,7 +2,7 @@ using MedFlow.Domain.Enums;
 
 namespace MedFlow.Application.Contracts.Exam;
 
-public sealed record CreateExamResponse(
+public sealed record ExamResponse(
     Guid Id,
     Guid PatientId,
     Guid? DoctorId,

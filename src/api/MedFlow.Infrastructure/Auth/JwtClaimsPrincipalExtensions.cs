@@ -4,6 +4,11 @@ namespace MedFlow.Infrastructure.Auth;
 
 public static class JwtClaimsPrincipalExtensions
 {
+    public static Guid? GetUserId(this ClaimsPrincipal principal) =>
+        principal.GetGuidClaim(ClaimTypes.NameIdentifier) ??
+        principal.GetGuidClaim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub) ??
+        principal.GetGuidClaim("sub");
+
     public static Guid? GetPatientId(this ClaimsPrincipal principal) =>
         principal.GetGuidClaim("patientId");
 

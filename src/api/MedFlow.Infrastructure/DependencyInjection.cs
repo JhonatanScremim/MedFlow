@@ -39,6 +39,20 @@ public static class DependencyInjection
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"].ToString();
+                        var path = context.HttpContext.Request.Path;
+
+                        if (!string.IsNullOrWhiteSpace(accessToken) && path.StartsWithSegments("/hubs"))
+                            context.Token = accessToken;
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         services.AddSingleton<IJwtTokenIssuer, JwtTokenIssuer>();
@@ -46,6 +60,8 @@ public static class DependencyInjection
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IExamRepository, ExamRepository>();
+        services.AddScoped<IConversationRepository, ConversationRepository>();
 
         return services;
     }

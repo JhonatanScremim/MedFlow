@@ -21,6 +21,14 @@ public abstract class BaseController : ControllerBase
         {
             return BadRequest(new { message = ex.Message });
         }
+        catch (ForbiddenException ex)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = ex.Message });
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
         catch (Exception ex)
         {
             return StatusCode(500, new
