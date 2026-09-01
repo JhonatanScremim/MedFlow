@@ -81,17 +81,24 @@ export interface RealtimeEvent {
 }
 
 export const examTypeLabels: Record<ExamType, string> = {
-  1: "BloodTest",
-  2: "XRay",
-  3: "Ultrasound",
-  4: "MagneticResonanceImaging",
-  5: "ComputedTomography",
-  6: "Electrocardiogram",
+  1: "Hemograma",
+  2: "Raio-X",
+  3: "Ultrassom",
+  4: "Ressonância magnética",
+  5: "Tomografia",
+  6: "Eletrocardiograma",
 };
 
 export const examStatusLabels: Record<ExamStatus, string> = {
-  0: "Requested",
-  1: "InProgress",
-  2: "Completed",
-  3: "Cancelled",
+  0: "Solicitado",
+  1: "Em análise",
+  2: "Concluído",
+  3: "Cancelado",
+};
+
+export const hubStatusLabels: Record<ConnectionStatus, string> = {
+  connected: "Conectado",
+  disconnected: "Desconectado",
+  connecting: "Conectando",
+  reconnecting: "Reconectando",
 };

@@ -1,14 +1,19 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { portalPathForRole, useAuth } from "./auth/AuthContext";
+import { isSessionExpired } from "./utils/session";
 import { DoctorPortal } from "./pages/DoctorPortal";
 import { LoginPage } from "./pages/LoginPage";
 import { PatientPortal } from "./pages/PatientPortal";
 
 function HomeRedirect() {
-  const { session, role } = useAuth();
+  const { session, role, logout } = useAuth();
 
-  if (!session || !role) {
+  if (!session || !role || isSessionExpired(session)) {
+    if (session && isSessionExpired(session)) {
+      logout();
+      return <Navigate to="/login?reason=expired" replace />;
+    }
     return <Navigate to="/login" replace />;
   }
 
